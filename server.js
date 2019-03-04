@@ -42,7 +42,17 @@ client.connect((err) => {
 // });
 
 app.get("/data", (req, res) => {
-    client.query("SELECT * FROM Indotel", (req, result) => {
+    // client.query("SELECT * FROM Indotel", (req, result) => {
+    client.query("SELECT DISTINCT proveedor from Indotel", (req, result) => {
+        res.send(result.rows)
+    })
+})
+
+app.get("/request", (req, res) => {
+    const {number} = req.query;
+    const NPA = number.slice(0,3);
+    const NXX = number.slice(3,6);
+    client.query(`SELECT PROVEEDOR, TIPO, LOCALIDAD FROM INDOTEL WHERE NPA = ${NPA} AND NXX = ${NXX}`, (req, result) => {
         res.send(result.rows)
     })
 })
